@@ -1,47 +1,68 @@
-﻿from croupier import Croupier
-from player import Player
-from deck import Deck
-from croupier import Croupier
+from baralhos import Baralho
+from players import Player
 
-class Game:
+class Game():
     def __init__(self):
-        self.player = Player('Jogador1')
-        self.croupier = Croupier('Croupier')
-        self.turn = 0
-        self.deck = Deck(40)
+
+        self.croupier = Player("Croupier")
+        self.humano = Player("Jogador1")
+
+        self.mesa = Baralho(40)
+
+        self.winner = None
+        self.running = True
+        self.last_option = "" 
+        self._current_player = None 
+
+    def status(self):
+        print(self.croupier)
+        print(self.humano)
+
+    def input(self):
+        while True:
+             o = input("(H)it, (S)tand, (F)old")
+             if o in "HhSsFf":
+                return o
 
     def play(self):
-        self.deal_starting_cards()
-        self.croupier.flip_second_card()
-        self.display_players_hands()
-        self.display_croupier_hand()
-        
-        self.deck.deal_additional(self.player)
-        
-        self.croupier.flip_second_card()
-        self.display_croupier_hand()
-        
-        self.deck.deal_additional(self.croupier)
-        
-        if self.croupier.is_busted():
-            if not self.player.is_busted():
-                self.player.win()
+        if self._current_player == self.humano:
+            self._current_player = self.croupier
         else:
-            if not self.player.is_busted():
-                if self.player.hand.get_points() > self.croupier.hand.get_points():
-                    self.player.win()
-                elif self.player.hand.get_points() < self.croupier.hand.get_points():
-                    self.player.lose()
-                else:
-                    self.player.push()
+            self._current_player = self.humano
 
-    def deal_starting_cards(self):
-        for i in range(2):
-            self.deck.deal(self.player.hand)
-            self.deck.deal(self.croupier.hand)
-        
-    def display_players_hands(self):
-        print(self.player)
-        
-    def display_croupier_hand(self):
-        print(self.croupier)
+
+        if self._current_player == self.humano:
+            option = self.input()
+        else:
+            if self.croupier.valor() >= 17:
+                option = "s"
+            else:
+                option = "h"
+
+
+        if option in "Hh":
+            self._current_player.adicionar(self.mesa.buscar())
+
+        if option in "Ff":
+            #Desiste e perde
+            self.running = False           
+            self.winner = self.croupier 
+
+        if option in "Ss" and self.last_option in "Ss":
+            self.running = False
+            self.winner = self.humano if self.humano.valor() > self.croupier.valor() else self.croupier
+ 
+        if self._current_player.valor() == 21:
+            self.winner = self._current_player 
+            self.running = False       
+
+        if self._current_player.valor() > 21:
+            self.winner = self.croupier if self._current_player == self.humano else self.humano
+            self.running = False       
+
+        self.last_option = option
+
+        if self.running == False:
+            return False
+
+        return True
