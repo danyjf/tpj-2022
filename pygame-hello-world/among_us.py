@@ -9,5 +9,6 @@ class AmongUs(Sprite):
         self.image = pygame.transform.scale(self.image, (170, 200))
         self.rect = Rect(100, 100, 200, 200)
     
-    def update(self):
-        pass
+    def update(self, vector):
+        x, y = vector
+        self.rect = self.rect.move(x, y)
