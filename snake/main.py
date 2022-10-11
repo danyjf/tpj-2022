@@ -29,12 +29,11 @@ while Environment.running:
             
     display.fill("white")
 
-    food.draw(display)
-
-    snake.draw(display, food)
-
     # move snake
     snake.move()
+    
+    food.draw(display)
+    snake.draw(display, food)
 
     # update window
     pygame.display.flip()
