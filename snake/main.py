@@ -10,11 +10,11 @@ clock = pygame.time.Clock()
 snake = Snake()
 food = Food()
 
-Environment.running = True
-while Environment.running:
+running = True
+while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            Environment.running = False
+            running = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
                 snake.up()
@@ -25,17 +25,25 @@ while Environment.running:
             elif event.key == pygame.K_RIGHT:
                 snake.right()
         elif event.type == Environment.GAME_EVENT:
-            print(event.txt)
-            
-    display.fill("white")
+            if event.name == 'collision':
+                if event.obj == 'wall' or event.obj == 'snake':
+                    running = False
+                elif event.obj == 'food':
+                    snake.grow()
+                    food.randomize_pos()
 
     # move snake
     snake.move()
     
-    food.draw(display)
-    snake.draw(display, food)
+    # snake collisions
+    snake.check_collisions(food)
 
-    # update window
+    # render
+    display.fill("white")
+    
+    food.draw(display)
+    snake.draw(display)
+
     pygame.display.flip()
     clock.tick(15)
 

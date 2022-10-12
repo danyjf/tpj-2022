@@ -6,4 +6,3 @@ class Environment:
     HEIGHT = 40
     SCALE = 10
     GAME_EVENT = pygame.event.custom_type()
-    running = True

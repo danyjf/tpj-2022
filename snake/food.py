@@ -12,5 +12,8 @@ class Food(pygame.sprite.Sprite):
 
         self.pos = (random.randrange(Environment.WIDTH), random.randrange(Environment.HEIGHT))
 
+    def randomize_pos(self):
+        self.pos = (random.randrange(Environment.WIDTH), random.randrange(Environment.HEIGHT))
+
     def draw(self, display):
         display.blit(self.image, (Environment.SCALE * self.pos[0], Environment.SCALE * self.pos[1]))
