@@ -1,5 +1,4 @@
 ﻿import pygame
-import test
 
 class Environment:
     WIDTH = 80

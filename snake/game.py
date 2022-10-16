@@ -1,4 +1,5 @@
 ﻿import pygame
+
 from environment import Environment
 from snake import Snake
 from food import Food

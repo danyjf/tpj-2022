@@ -1,4 +1,5 @@
 ﻿import pygame
+
 from environment import Environment
 
 class Snake:
