@@ -23,7 +23,11 @@ class InputHandler:
         'w': Up(),
         's': Down(),
         'a': Left(),
-        'd': Right()
+        'd': Right(),
+        'up': Up(),
+        'down': Down(),
+        'left': Left(),
+        'right': Right()
     }
     
     def handle_input(self, key, actor):
