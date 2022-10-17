@@ -1,9 +1,11 @@
 ﻿import pygame
 
 from environment import Environment
+from subject import Subject
 
-class Snake:
+class Snake(Subject):
     def __init__(self):
+        super().__init__()
         self.body = [(40, 20), (39, 20), (38, 20)]
         self.direction = (1, 0)
         self.length = 3
@@ -33,18 +35,13 @@ class Snake:
     def check_collisions(self, food):
         for x, y in self.body:
             if food.pos == (x, y):
-                ev = pygame.event.Event(Environment.GAME_EVENT, {'name': 'collision', 'obj': 'food'})
-                pygame.event.post(ev)
+                self.notify(self, Environment.EAT)
 
             if x not in range(Environment.WIDTH) or y not in range(Environment.HEIGHT):
-                print("Snake crashed against the wall")
-                ev = pygame.event.Event(Environment.GAME_EVENT, {'name': 'collision', 'obj': 'wall'})
-                pygame.event.post(ev)
+                self.notify(self, Environment.DIE)
 
             if self.body.count((x, y)) > 1:
-                print("Snake eats self")
-                ev = pygame.event.Event(Environment.GAME_EVENT, {'name': 'collision', 'obj': 'snake'})
-                pygame.event.post(ev)
+                self.notify(self, Environment.DIE)
 
     def draw(self, display):
         for x, y in self.body:
