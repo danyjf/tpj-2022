@@ -33,8 +33,8 @@ class Snake:
     def check_collisions(self, food):
         for x, y in self.body:
             if food.pos == (x, y):
-                    ev = pygame.event.Event(Environment.GAME_EVENT, {'name': 'collision', 'obj': 'food'})
-                    pygame.event.post(ev)
+                ev = pygame.event.Event(Environment.GAME_EVENT, {'name': 'collision', 'obj': 'food'})
+                pygame.event.post(ev)
 
             if x not in range(Environment.WIDTH) or y not in range(Environment.HEIGHT):
                 print("Snake crashed against the wall")

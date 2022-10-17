@@ -38,7 +38,7 @@ class Game:
                         elif event.obj == 'food':
                             self.snake.grow()
                             self.food.randomize_pos()
-
+            
             # move snake
             self.snake.move()
             
