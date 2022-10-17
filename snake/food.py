@@ -2,18 +2,15 @@
 import random
 
 from environment import Environment
+from food_sprite import FoodSprite
 
 class Food(pygame.sprite.Sprite):
     def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("./assets/apple.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (Environment.SCALE, Environment.SCALE))
-        self.rect = self.image.get_rect()
-
+        self.food_sprite = FoodSprite()
         self.pos = (random.randrange(Environment.WIDTH), random.randrange(Environment.HEIGHT))
 
     def randomize_pos(self):
         self.pos = (random.randrange(Environment.WIDTH), random.randrange(Environment.HEIGHT))
 
     def draw(self, display):
-        display.blit(self.image, (Environment.SCALE * self.pos[0], Environment.SCALE * self.pos[1]))
+        display.blit(self.food_sprite.image, (Environment.SCALE * self.pos[0], Environment.SCALE * self.pos[1]))
