@@ -4,7 +4,7 @@ import random
 from environment import Environment
 from food_sprite import FoodSprite
 
-class Food(pygame.sprite.Sprite):
+class Food:
     def __init__(self):
         self.food_sprite = FoodSprite()
         self.pos = (random.randrange(Environment.WIDTH), random.randrange(Environment.HEIGHT))
