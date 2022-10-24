@@ -37,15 +37,17 @@ class Snake(Subject):
         self.length += 1
         
     def check_collisions(self, food):
-        for x, y in self.body:
-            for item in food:
-                if item.pos == (x, y):
-                    self.notify([self, item], Environment.EAT)
+        head = self.body[0]
+        
+        for item in food:
+            if item.pos == head:
+                self.notify([self, item], Environment.EAT)
+                
+        if head[0] not in range(Environment.WIDTH) or head[1] not in range(Environment.HEIGHT):
+            self.notify(self, Environment.DIE)
 
-            if x not in range(Environment.WIDTH) or y not in range(Environment.HEIGHT):
-                self.notify(self, Environment.DIE)
-
-            if self.body.count((x, y)) > 1:
+        for body in self.body[1:]:
+            if head == body:
                 self.notify(self, Environment.DIE)
 
     def draw(self, display):
