@@ -1,5 +1,4 @@
-﻿import pygame
-import random
+﻿import random
 
 from environment import Environment
 

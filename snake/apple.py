@@ -10,5 +10,5 @@ class Apple(Food):
     def draw(self, display):
         display.blit(self.apple_sprite.image, (Environment.SCALE * self.pos[0], Environment.SCALE * self.pos[1]))
     
-    def clone(self):
+    def clone(self) -> Food:
         return Apple()

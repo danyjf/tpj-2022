@@ -5,19 +5,26 @@ from snake import Snake
 from apple import Apple
 from input_handler import InputHandler
 from observer import Observer
+from spawner import Spawner
 
 class Game(Observer):
     def __init__(self):
         self.display = pygame.display.set_mode((Environment.SCALE * Environment.WIDTH, Environment.SCALE * Environment.HEIGHT))
         self.clock = pygame.time.Clock()
+        self.input_handler = InputHandler()
+        self.running = True
+        
         # self.snakes = [Snake(40, 10), Snake(40, 30)]
         self.snakes = [Snake(40, 10)]
         for snake in self.snakes:
             snake.add_observer(self)
+        
+        self.spawner = Spawner()
         apple = Apple()
-        self.food = [apple, apple.clone()]
-        self.input_handler = InputHandler()
-        self.running = True
+        self.food = [
+            self.spawner.spawn_food(apple), 
+            self.spawner.spawn_food(apple)
+        ]
     
     def get_input(self, event):
         if event.key == pygame.K_w:
