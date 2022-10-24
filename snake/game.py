@@ -2,7 +2,7 @@
 
 from environment import Environment
 from snake import Snake
-from food import Food
+from apple import Apple
 from input_handler import InputHandler
 from observer import Observer
 
@@ -14,7 +14,8 @@ class Game(Observer):
         self.snakes = [Snake(40, 10)]
         for snake in self.snakes:
             snake.add_observer(self)
-        self.food = Food()
+        apple = Apple()
+        self.food = [apple, apple.clone()]
         self.input_handler = InputHandler()
         self.running = True
     
@@ -38,8 +39,8 @@ class Game(Observer):
     
     def on_notify(self, entity, event):
         if event == Environment.EAT:
-            entity.grow()
-            self.food.randomize_pos()
+            entity[0].grow()
+            entity[1].randomize_pos()
         elif event == Environment.DIE:
             self.running = False
     
@@ -59,7 +60,8 @@ class Game(Observer):
             # render
             self.display.fill("white")
             
-            self.food.draw(self.display)
+            for item in self.food:
+                item.draw(self.display)
             for snake in self.snakes:
                 snake.draw(self.display)
 

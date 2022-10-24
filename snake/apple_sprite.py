@@ -2,7 +2,7 @@
 
 from environment import Environment
 
-class FoodSprite(pygame.sprite.Sprite):
+class AppleSprite(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("./assets/apple.png").convert_alpha()

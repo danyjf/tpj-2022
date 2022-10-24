@@ -6,7 +6,7 @@ from subject import Subject
 class Snake(Subject):
     def __init__(self, posX, posY):
         super().__init__()
-        self.body = [(posX, posY), (posX - 1, posY), (posX - 2, posY)]
+        self.body = [(posX - 1, posY), (posX - 2, posY)]
         self.direction = (1, 0)
         self.length = 3
 
@@ -38,8 +38,9 @@ class Snake(Subject):
         
     def check_collisions(self, food):
         for x, y in self.body:
-            if food.pos == (x, y):
-                self.notify(self, Environment.EAT)
+            for item in food:
+                if item.pos == (x, y):
+                    self.notify([self, item], Environment.EAT)
 
             if x not in range(Environment.WIDTH) or y not in range(Environment.HEIGHT):
                 self.notify(self, Environment.DIE)
