@@ -9,6 +9,7 @@ class SNAKE_STATES(Enum):
     MOVE = 1
     EAT = 2
     GROW = 3
+    DIE = 4
 
 class Snake(Subject):
     def __init__(self, name, posX, posY):
@@ -49,14 +50,15 @@ class Snake(Subject):
     def kill(self):
         self.dead = True
     
-    def die(self):
+    def death_collision(self):
         head = self.body[0]
         if head[0] not in range(Environment.WIDTH) or head[1] not in range(Environment.HEIGHT):
-            self.kill()
+            return True
 
         for body in self.body[1:]:
             if head == body:
-                self.kill()
+                return True
+        return False
 
     def food_collision(self, food):
         head = self.body[0]
@@ -72,6 +74,8 @@ class Snake(Subject):
             self.move()
             if self.food_collision(food):
                 self.state = SNAKE_STATES.EAT
+            elif self.death_collision():
+                self.state = SNAKE_STATES.DIE
         elif self.state == SNAKE_STATES.EAT:
             self.move()
             self.state = SNAKE_STATES.GROW
@@ -79,6 +83,8 @@ class Snake(Subject):
             self.move()
             self.grow()
             self.state = SNAKE_STATES.MOVE
+        elif self.state == SNAKE_STATES.DIE:
+            self.kill()
 
     def draw(self, display):
         for x, y in self.body:
