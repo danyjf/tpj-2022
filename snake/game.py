@@ -14,8 +14,8 @@ class Game:
         self.input_handler = InputHandler()
         self.running = True
         
-        # self.snakes = [Snake('Player1', 40, 10), Snake('Player2', 40, 30)]
-        self.snakes = [Snake('Player1', 40, 10)]
+        self.snakes = [Snake('Player1', 40, 10), Snake('Player2', 40, 30)]
+        # self.snakes = [Snake('Player1', 40, 10)]
 
         self.score_board = ScoreBoard(self.snakes)
         
@@ -25,7 +25,7 @@ class Game:
             self.spawner.spawn_food(apple), 
             self.spawner.spawn_food(apple)
         ]
-        
+    
     def get_input(self, event):
         if event.key == pygame.K_w:
             self.input_handler.handle_input('w', self.snakes[0])
@@ -51,6 +51,7 @@ class Game:
             item.draw(self.display)
         for snake in self.snakes:
             snake.draw(self.display)
+        self.score_board.draw(self.display)
             
         pygame.display.flip()
 
