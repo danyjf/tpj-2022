@@ -2,7 +2,7 @@
 
 class ScoreBoardText:
     def __init__(self, scores):
-        self.font = pygame.font.Font('Figerona-VF.ttf', 20)
+        self.font = pygame.font.Font('./assets/fonts/Figerona-VF.ttf', 20)
         self.display_text = {}
         self.text = {}
         self.text_rect = {}
