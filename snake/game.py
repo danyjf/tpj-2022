@@ -4,10 +4,9 @@ from environment import Environment
 from snake import Snake
 from apple import Apple
 from input_handler import InputHandler
-from observer import Observer
 from spawner import Spawner
 
-class Game(Observer):
+class Game:
     def __init__(self):
         self.display = pygame.display.set_mode((Environment.SCALE * Environment.WIDTH, Environment.SCALE * Environment.HEIGHT))
         self.clock = pygame.time.Clock()
@@ -16,8 +15,6 @@ class Game(Observer):
         
         # self.snakes = [Snake(40, 10), Snake(40, 30)]
         self.snakes = [Snake(40, 10)]
-        for snake in self.snakes:
-            snake.add_observer(self)
         
         self.spawner = Spawner()
         apple = Apple()
@@ -44,33 +41,32 @@ class Game(Observer):
         elif event.key == pygame.K_RIGHT:
             self.input_handler.handle_input('right', self.snakes[-1])
     
-    def on_notify(self, entity, event):
-        if event == Environment.EAT:
-            entity[0].grow()
-            entity[1].randomize_pos()
-        elif event == Environment.DIE:
-            self.running = False
+    def render(self):
+        self.display.fill("white")
+            
+        for item in self.food:
+            item.draw(self.display)
+        for snake in self.snakes:
+            snake.draw(self.display)
+            
+        pygame.display.flip()
+
+    def update(self):
+        for snake in self.snakes:
+            snake.update(self.food)
     
     def loop(self):
-        while self.running:
+        while not any(snake.dead for snake in self.snakes):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    self.running = False
+                    [snake.kill() for snake in self.snakes]
                 elif event.type == pygame.KEYDOWN:
                     self.get_input(event)
 
-            # move snake and check collisions
-            for snake in self.snakes:
-                snake.move()
-                snake.check_collisions(self.food)
+            # update snakes
+            self.update()
 
             # render
-            self.display.fill("white")
+            self.render()
             
-            for item in self.food:
-                item.draw(self.display)
-            for snake in self.snakes:
-                snake.draw(self.display)
-
-            pygame.display.flip()
             self.clock.tick(15)
