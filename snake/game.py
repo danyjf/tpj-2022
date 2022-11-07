@@ -5,6 +5,7 @@ from snake import Snake
 from apple import Apple
 from input_handler import InputHandler
 from spawner import Spawner
+from score_board import ScoreBoard
 
 class Game:
     def __init__(self):
@@ -13,8 +14,10 @@ class Game:
         self.input_handler = InputHandler()
         self.running = True
         
-        # self.snakes = [Snake(40, 10), Snake(40, 30)]
-        self.snakes = [Snake(40, 10)]
+        # self.snakes = [Snake('Player1', 40, 10), Snake('Player2', 40, 30)]
+        self.snakes = [Snake('Player1', 40, 10)]
+
+        self.score_board = ScoreBoard(self.snakes)
         
         self.spawner = Spawner()
         apple = Apple()
@@ -22,7 +25,7 @@ class Game:
             self.spawner.spawn_food(apple), 
             self.spawner.spawn_food(apple)
         ]
-    
+        
     def get_input(self, event):
         if event.key == pygame.K_w:
             self.input_handler.handle_input('w', self.snakes[0])
@@ -63,10 +66,8 @@ class Game:
                 elif event.type == pygame.KEYDOWN:
                     self.get_input(event)
 
-            # update snakes
             self.update()
 
-            # render
             self.render()
             
             self.clock.tick(15)

@@ -11,8 +11,9 @@ class SNAKE_STATES(Enum):
     GROW = 3
 
 class Snake(Subject):
-    def __init__(self, posX, posY):
+    def __init__(self, name, posX, posY):
         super().__init__()
+        self.name = name
         self.dead = False
         self.body = [(posX - 1, posY), (posX - 2, posY)]
         self.direction = (1, 0)
@@ -62,6 +63,7 @@ class Snake(Subject):
         for item in food:
             if item.pos == head:
                 item.randomize_pos()
+                self.notify(self, Environment.EAT)
                 return True
         return False
 
