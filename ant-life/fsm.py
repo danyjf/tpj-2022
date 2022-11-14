@@ -1,3 +1,5 @@
+import random
+
 class State:
     def __init__(self, name) -> None:
         self.name = name
@@ -16,24 +18,31 @@ class Transition:
         self._from = _from
         self._to = _to
 
-class Idle(State):
+class Search(State):
     def __init__(self) -> None:
         super().__init__(self.__class__.__name__)
 
     def update(self, object):
-        print("waiting for your command...")
+        object.search()
+
+class GoHome(State):
+    def __init__(self) -> None:
+        super().__init__(self.__class__.__name__)
+
+    def update(self, object):
+        print("Return Home")
         return super().update(object)
 
-class Walk(State):
+class Dead(State):
     def __init__(self) -> None:
         super().__init__(self.__class__.__name__)
 
     def update(self, object):
-        print("Moving")
+        print("Died")
         return super().update(object)
 
 class FSM:
-    def __init__(self, states: list(State), transitions: dict(Transition)) -> None:
+    def __init__(self, states, transitions) -> None:
         self._states = states
         self._transitions = transitions
 
@@ -53,22 +62,3 @@ class FSM:
             self.current.exit()
             return False
         return True
-
-
-if __name__ == "__main__":
-    walk = Walk()
-    idle = Idle()
-    dead = State("Dead")
-
-    states = [walk, idle, dead]
-    transitions = {
-        "rest":Transition(walk, idle),
-        "engage": Transition(idle, walk),
-        "harakiri": Transition(idle, dead)
-        }
-
-    fsm = FSM(states, transitions)
-
-    event = None
-    while fsm.update(event, None):
-        event = input(">")
