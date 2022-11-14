@@ -12,7 +12,6 @@ class Game:
         self.display = pygame.display.set_mode((Environment.SCALE * Environment.WIDTH, Environment.SCALE * Environment.HEIGHT))
         self.clock = pygame.time.Clock()
         self.input_handler = InputHandler()
-        self.running = True
         
         self.snakes = [Snake('Player1', 40, 10), Snake('Player2', 40, 30)]
         # self.snakes = [Snake('Player1', 40, 10)]
