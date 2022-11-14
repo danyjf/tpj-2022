@@ -2,12 +2,14 @@
 
 from const import WIDTH, HEIGHT, SCALE
 from ant import Ant
+from home import Home
+from food import Food
 
 class Game:
     def __init__(self):
         self.display = pygame.display.set_mode((SCALE * WIDTH, SCALE * HEIGHT))
         self.clock = pygame.time.Clock()
-        self.game_objects = [Ant()]
+        self.game_objects = [Ant(), Home(), Food()]
     
     def loop(self):
         while True:
