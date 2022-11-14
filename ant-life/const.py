@@ -1,0 +1,3 @@
+﻿WIDTH = 80
+HEIGHT = 40
+SCALE = 10
