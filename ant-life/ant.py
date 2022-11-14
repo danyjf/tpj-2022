@@ -2,11 +2,12 @@
 import random
 
 from const import SCALE
+from entity import Entity
 
-class Ant:
+class Ant(Entity):
     def __init__(self):
-        self.x = 40
-        self.y = 20
+        self.x = 50
+        self.y = 30
     
     def update(self):
         self.x += random.randrange(-1, 2)
