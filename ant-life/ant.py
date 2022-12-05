@@ -46,6 +46,11 @@ class Ant(Entity):
             
     def search(self):
         random.choice(self.directions)()
+        
+    def check_collision(self, entity):
+        if self.x == entity.x and self.y == entity.y and self != entity:
+            if entity.__class__.__name__ == 'Food':
+                self.event = 'collected_resource'
 
     def render(self, display):
         pygame.draw.rect(display, 'black', (SCALE * self.x, SCALE * self.y, SCALE, SCALE))
