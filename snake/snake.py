@@ -16,7 +16,7 @@ class Snake(Subject):
         super().__init__()
         self.name = name
         self.dead = False
-        self.body = [(posX - 1, posY), (posX - 2, posY)]
+        self.body = [(posX, posY), (posX - 1, posY), (posX - 2, posY)]
         self.direction = (1, 0)
         self.length = 3
         self.state = SNAKE_STATES.MOVE

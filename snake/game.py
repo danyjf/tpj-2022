@@ -7,13 +7,27 @@ from input_handler import InputHandler
 from spawner import Spawner
 from score_board import ScoreBoard
 
+import socket
+import struct
+
+MCAST_GRP = '224.1.1.1'
+MCAST_PORT = 5007
+
 class Game:
     def __init__(self):
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+        self.sock.bind(('', MCAST_PORT))
+        mreq = struct.pack("4sl", socket.inet_aton(MCAST_GRP), socket.INADDR_ANY)
+
+        self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
+        
         self.display = pygame.display.set_mode((Environment.SCALE * Environment.WIDTH, Environment.SCALE * Environment.HEIGHT))
         self.clock = pygame.time.Clock()
         self.input_handler = InputHandler()
         
-        self.snakes = [Snake('Player1', 40, 10), Snake('Player2', 40, 30)]
+        self.snakes = [Snake('Player1', 40, 20), Snake('Player2', 40, 20)]
         # self.snakes = [Snake('Player1', 40, 10)]
 
         self.score_board = ScoreBoard(self.snakes)
@@ -34,14 +48,6 @@ class Game:
             self.input_handler.handle_input('a', self.snakes[0])
         elif event.key == pygame.K_d:
             self.input_handler.handle_input('d', self.snakes[0])
-        elif event.key == pygame.K_UP:
-            self.input_handler.handle_input('up', self.snakes[-1])
-        elif event.key == pygame.K_DOWN:
-            self.input_handler.handle_input('down', self.snakes[-1])
-        elif event.key == pygame.K_LEFT:
-            self.input_handler.handle_input('left', self.snakes[-1])
-        elif event.key == pygame.K_RIGHT:
-            self.input_handler.handle_input('right', self.snakes[-1])
     
     def render(self):
         self.display.fill("white")
@@ -65,6 +71,20 @@ class Game:
                     [snake.kill() for snake in self.snakes]
                 elif event.type == pygame.KEYDOWN:
                     self.get_input(event)
+            
+            try:
+                data = self.sock.recv(10240)
+                
+                if data == b'up':
+                    self.snakes[-1].up()
+                elif data == b'down':
+                    self.snakes[-1].down()
+                elif data == b'left':
+                    self.snakes[-1].left()
+                elif data == b'right':
+                    self.snakes[-1].right()
+            except:
+                pass
 
             self.update()
 
